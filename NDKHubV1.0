@@ -1,0 +1,158 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local Window = Library.CreateLib("NDK Hub", "Synapse")
+
+local Main = Window:NewTab("Main")
+local MainSelection = Main:NewSelection("Main")
+
+MainSection:NewButton("Infinite Jump [B]", "Toggles infinite jump", function()
+    local Mouse = game.Players.LocalPlayer:GetMouse()
+    local InfiniteJump = false
+
+    script.Parent.MouseButton1Click:Connect(function()
+        if InfiniteJump == false then
+            InfiniteJump = true
+            script.Parent.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+        else
+            InfiniteJump = false
+            script.Parent.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+        end
+    end)
+
+    Mouse.KeyDown:Connect(function(k)
+        if k == "b" then
+            if InfiniteJump == false then
+                InfiniteJump = true
+                script.Parent.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+            else
+                InfiniteJump = false
+                script.Parent.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+            end
+        end
+    end)
+
+    game:GetService("UserInputService").JumpRequest:Connect(function()
+        if InfiniteJump == true then
+            game:GetService "Players".LocalPlayer.Character:FindFirstChildOfClass 'Humanoid'
+                :ChangeState("Jumping")
+        end
+    end)
+end
+coroutine.wrap(setInfinityJumpButton)()
+end)
+
+MainSection:NewButton("Back/Front Flips", "Allows you to do Flips", function()
+    --[[ Info ]]--
+
+local ver = "2.00"
+local scriptname = "feFlip"
+
+
+--[[ Keybinds ]]--
+
+local FrontflipKey = Enum.KeyCode.Z
+local BackflipKey = Enum.KeyCode.X
+local AirjumpKey = Enum.KeyCode.C
+
+
+--[[ Dependencies ]]--
+
+local ca = game:GetService("ContextActionService")
+local zeezy = game:GetService("Players").LocalPlayer
+local h = 0.0174533
+local antigrav
+
+
+--[[ Functions ]]--
+
+function zeezyFrontflip(act,inp,obj)
+	if inp == Enum.UserInputState.Begin then
+		zeezy.Character.Humanoid:ChangeState("Jumping")
+		wait()
+		zeezy.Character.Humanoid.Sit = true
+		for i = 1,360 do 
+			delay(i/720,function()
+			zeezy.Character.Humanoid.Sit = true
+				zeezy.Character.HumanoidRootPart.CFrame = zeezy.Character.HumanoidRootPart.CFrame * CFrame.Angles(-h,0,0)
+			end)
+		end
+		wait(0.55)
+		zeezy.Character.Humanoid.Sit = false
+	end
+end
+
+function zeezyBackflip(act,inp,obj)
+	if inp == Enum.UserInputState.Begin then
+		zeezy.Character.Humanoid:ChangeState("Jumping")
+		wait()
+		zeezy.Character.Humanoid.Sit = true
+		for i = 1,360 do
+			delay(i/720,function()
+			zeezy.Character.Humanoid.Sit = true
+				zeezy.Character.HumanoidRootPart.CFrame = zeezy.Character.HumanoidRootPart.CFrame * CFrame.Angles(h,0,0)
+			end)
+		end
+		wait(0.55)
+		zeezy.Character.Humanoid.Sit = false
+	end
+end
+
+function zeezyAirjump(act,inp,obj)
+	if inp == Enum.UserInputState.Begin then
+		zeezy.Character:FindFirstChildOfClass'Humanoid':ChangeState("Seated")
+		wait()
+		zeezy.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")	
+	end
+end
+
+
+--[[ Binds ]]--
+
+ca:BindAction("zeezyFrontflip",zeezyFrontflip,false,FrontflipKey)
+ca:BindAction("zeezyBackflip",zeezyBackflip,false,BackflipKey)
+ca:BindAction("zeezyAirjump",zeezyAirjump,false,AirjumpKey)
+end)
+
+MainSection:NewToggle("Toggle Super-Human", "Toggles your WalkSpeed and JumpPower to 75|120", function(state)
+    if state then
+        game.Players.LocalPlayer.Character.Humanoid.Walkspeed = 75
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = 120
+    else
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+    end
+end)
+
+MainSection:NewButton("Infinite Yield", "FE Admin Commands", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'),true)()
+end)
+
+//LocalPlayer
+local Player = Window:NewTab("Player")
+local PlayerSelection = Player:NewSelection("Player")
+
+PlayerSelection:NewSlider("WalkSpeed","Changes your walking speed", 500 16 function(s) == 500 (MaxValue) | 0 (MinValue)
+    game:Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
+end)
+
+PlayerSelection:NewSlider("JumpPower","Changes your jump power", 350 50 function(s) == 500 (MaxValue) | 0 (MinValue)
+    game:Players.LocalPlayer.Character.Humanoid.JumpPower = s
+end)
+
+PlayerSection:NewButton("Reset WS/JP", "Reset WS/JP to 16/50 (Default)", function()
+    game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+    game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+end)
+
+//Other
+local Other = Window:NewTab("Other")
+local OtherSelection = Other:NewSelection("Other")
+
+OtherSection:NewButton("Chat Spoofer", "Runs an Roblox Chat Spoofing script", function()
+    loadstring(game:HttpGet('https://pastebin.com/raw/djBfk8Li'))
+end)
+
+OtherSection:NewButton("Bypassed Fly", "Bypassed fly Script", function()
+    loadstring(game:HttpGet('https://raw.githubusercontent.com/Nicuse/RobloxScripts/main/BypassedFly.lua'))
+
+    Fly(true)
+end)
